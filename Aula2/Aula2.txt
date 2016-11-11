@@ -1,0 +1,85 @@
+Escolha 3 colegas e:
+
+Insira no banco informações sobre você e seus colegas como nome, data de nascimento
+disciplinas cursadas e em curso na PUC
+
+
+db.alunos.insert( {
+                     "Nome": "Francisco Moura"
+                     "Data_Nasc": ISODate("1981-09-22T00:00:00Z"),
+                     "Disciplinas": ["BDG", "ILE", "AQD", "NSQ"]
+            }
+  )
+
+
+  db.alunos.insert( {
+                      Nome: "Francisco Mario de Moura",
+                      Data_Nasc: ISODate("1979-02-15T00:00:00Z"),
+                      Disciplinas: ["BDG", "ILE", "AQD", "NSQ"]
+            }
+  )
+
+
+   db.alunos.insert( {
+                      Nome: "Marcelo Dos Santos Castanheira",
+                      Data_Nasc: ISODate("1977-04-28T00:00:00Z"),
+                      Disciplinas: ["BDG", "ILE", "AQD", "NSQ"]
+            }
+  )
+
+  db.alunos.find()
+
+{ "_id" : ObjectId("5825ffad7a0c51e64cc7e6e7"), "Nome" : "Eduardo Augusto Nascimento Lima", "Data_Nasc" : ISODate("1981-09-22T00:00:00Z"), "Disciplinas" : [ "BDG", "ILE", "AQD", "NSQ" ] }
+{ "_id" : ObjectId("582601527a0c51e64cc7e6e8"), "Nome" : "Francisco Mario de Moura", "Data_Nasc" : ISODate("1979-02-15T00:00:00Z"), "Disciplinas" : [ "BDG", "ILE", "AQD", "NSQ" ] }
+{ "_id" : ObjectId("582601767a0c51e64cc7e6e9"), "Nome" : "Marcelo Dos Santos Castanheira", "Data_Nasc" : ISODate("1977-04-28T00:00:00Z"), "Disciplinas" : [ "BDG", "ILE", "AQD", "NSQ" ] }
+
+
+
+Procure no banco a pessoa com a menor data de nascimento
+
+  db.alunos.find().sort({Data_Nasc: 1}).limit(1)
+
+{ "_id" : ObjectId("582601767a0c51e64cc7e6e9"), "Nome" : "Marcelo Dos Santos Castanheira", "Data_Nasc" : ISODate("1977-04-28T00:00:00Z"), "Disciplinas" : [ "BDG", "ILE", "AQD", "NSQ" ] }
+
+
+Atualize a sua nota na disciplina NoSQL para 5
+
+
+db.alunos.update(
+{
+	Name: "Eduardo Augusto Nascimento Lima"
+
+
+},
+
+{
+
+   $set{
+
+         Nota: [ 4, 3, 4, 5 ] 
+   }
+
+}
+
+)
+
+
+
+db.alunos.update( { Nome: { $eq:"Eduardo Augusto Nascimento Lima" } },
+                           { $set:   { Nota: [ 4, 3, 4, 5 ] } },
+                           { multi: true }
+  )
+
+  db.alunos.find({ Nome: {$eq:"Eduardo Augusto Nascimento Lima"} } )
+
+{ "_id" : ObjectId("5825ffad7a0c51e64cc7e6e7"), "Nome" : "Eduardo Augusto Nascimento Lima", "Data_Nasc" : ISODate("1981-09-22T00:00:00Z"), "Disciplinas" : [ "BDG", "ILE", "AQD", "NSQ" ], "Nota" : [ 4, 3, 4, 5 ] }
+
+
+Apague um de seus colegas
+
+db.alunos.remove({ Nome: {$eq:"Marcelo Dos Santos Castanheira"} } )
+
+WriteResult({ "nRemoved" : 1 })
+
+> db.alunos.find({ Nome: {$eq:"Marcelo Dos Santos Castanheira"} } )
+>
